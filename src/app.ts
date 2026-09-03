@@ -1,8 +1,7 @@
 import express from "express";
 import cors from "cors";
-import { toNodeHandler } from "better-auth/node";
-import { auth } from "./lib/auth.js";
 import homeRouter from "./Routes/home.route.js";
+import authRouter from "./Routes/auth.route.js";
 
 const app = express();
 
@@ -13,11 +12,13 @@ app.use(
   })
 );
 
-app.all("/api/auth/*splat", toNodeHandler(auth));
 
 app.use(express.json());
 
 // Home route
 app.use("/", homeRouter);
+
+// Auth route
+app.use("/auth", authRouter);
 
 export default app;
