@@ -1,14 +1,18 @@
 import express from "express";
 import cors from "cors";
 
+import cookieParser from "cookie-parser";
 import homeRouter from "./Routes/home.route.js";
 import authRouter from "./Routes/auth.route.js";
+import getMeRouter from "./Routes/getMe.route.js";
+import logout from "./Routes/logout.route.js";
 
 const app = express();
+app.use(cookieParser());
 
 app.use(
     cors({
-        origin: process.env.FRONTEND_URL,
+        origin: process.env.NEXT_PUBLIC_FRONTEND_URL,
         credentials: true,
     })
 );
@@ -20,5 +24,9 @@ app.use("/", homeRouter);
 
 // Auth routes
 app.use("/api/auth", authRouter);
+
+app.use("/api", getMeRouter);
+
+app.use("/api", logout);
 
 export default app;

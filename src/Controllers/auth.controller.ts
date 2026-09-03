@@ -2,19 +2,16 @@ import type { Request, Response } from "express";
 import bcrypt from "bcrypt";
 
 import { prisma } from "../lib/prisma.js";
-import {
-    generateAccessToken,
-    generateRefreshToken,
-} from "../utils/jwt.js";
+import { generateAccessToken, generateRefreshToken, } from "../utils/jwt.js";
 
 export const signup = async (req: Request, res: Response) => {
     try {
-        const { username, email, password } = req.body;
+        const { name, email, password } = req.body;
 
-        if (!email || !password) {
+        if (!email || !name || !password) {
             return res.status(400).json({
                 success: false,
-                message: "Email and password are required",
+                message: "All fields are required",
             });
         }
 
@@ -35,15 +32,28 @@ export const signup = async (req: Request, res: Response) => {
 
         const user = await prisma.user.create({
             data: {
-                username,
+                name,
                 email,
                 password: hashedPassword,
             },
         });
 
         const accessToken = generateAccessToken(user.id);
-
         const refreshToken = generateRefreshToken(user.id);
+
+        res.cookie("accessToken", accessToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            maxAge: 15 * 60 * 1000,
+        });
+
+        res.cookie("refreshToken", refreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            maxAge: 24 * 60 * 60 * 1000,
+        });
 
         await prisma.user.update({
             where: {
@@ -60,11 +70,9 @@ export const signup = async (req: Request, res: Response) => {
             data: {
                 user: {
                     id: user.id,
-                    username: user.username,
+                    name: user.name,
                     email: user.email,
                 },
-                accessToken,
-                refreshToken,
             },
         });
     } catch (error) {

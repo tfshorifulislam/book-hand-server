@@ -11,16 +11,14 @@ export const requireAuth = (
     next: NextFunction
 ) => {
     try {
-        const authHeader = req.headers.authorization;
+        const token = req.cookies.accessToken;
 
-        if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        if (!token) {
             return res.status(401).json({
                 success: false,
                 message: "Access token is required",
             });
         }
-
-        const token = authHeader.split(" ")[1];
 
         const decoded = verifyAccessToken(token);
 
