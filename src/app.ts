@@ -6,6 +6,7 @@ import homeRouter from "./Routes/home.route.js";
 import authRouter from "./Routes/auth.route.js";
 import getMeRouter from "./Routes/getMe.route.js";
 import logout from "./Routes/logout.route.js";
+import login from "./Routes/login.router.js";
 
 const app = express();
 app.use(cookieParser());
@@ -28,5 +29,7 @@ app.use("/api/auth", authRouter);
 app.use("/api", getMeRouter);
 
 app.use("/api", logout);
+
+app.use("/api", login);
 
 export default app;
