@@ -11,6 +11,7 @@ export const me = async (req: AuthRequest, res: Response) => {
             select: {
                 id: true,
                 name: true,
+                image: true,
                 email: true,
                 createdAt: true,
                 updatedAt: true,

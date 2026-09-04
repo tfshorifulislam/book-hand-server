@@ -9,6 +9,7 @@ import getMeRouter from "./Routes/getMe.route.js";
 import logout from "./Routes/logout.route.js";
 import login from "./Routes/login.router.js";
 import refreshRouter from "./Routes/refresh.route.js";
+import googleRouter from "./Routes/google.route.js";
 
 const app = express();
 app.use(cookieParser());
@@ -36,5 +37,7 @@ app.use("/api", logout);
 app.use("/api", login);
 
 app.use("/api/auth", refreshRouter);
+
+app.use("/api/auth", googleRouter);
 
 export default app;

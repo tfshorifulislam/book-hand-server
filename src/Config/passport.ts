@@ -12,6 +12,8 @@ passport.use(
         },
 
         async (_accessToken, _refreshToken, profile, done) => {
+
+
             try {
                 const email = profile.emails?.[0]?.value;
 
@@ -19,20 +21,30 @@ passport.use(
                     return done(new Error("Google email not found"));
                 }
 
-                
+
                 let user = await prisma.user.findUnique({
                     where: {
                         email,
                     },
                 });
 
-               
+
                 if (!user) {
                     user = await prisma.user.create({
                         data: {
                             name: profile.displayName,
                             email,
+                            image: profile.photos?.[0]?.value ?? null,
                             password: null,
+                        },
+                    });
+                } else if (!user.image && profile.photos?.[0]?.value) {
+                    user = await prisma.user.update({
+                        where: {
+                            id: user.id,
+                        },
+                        data: {
+                            image: profile.photos[0].value,
                         },
                     });
                 }

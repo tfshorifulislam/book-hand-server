@@ -6,15 +6,13 @@ import {
     generateRefreshToken,
 } from "../utils/jwt.js";
 
-export const googleCallback = async (
-    req: Request,
-    res: Response
-) => {
+export const googleCallback = async ( req: Request, res: Response ) => {
     try {
         const user = req.user as {
             id: string;
             name: string;
             email: string;
+            image: string | null;
         };
 
         const accessToken = generateAccessToken(user.id);
