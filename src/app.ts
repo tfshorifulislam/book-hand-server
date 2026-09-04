@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 
 import cookieParser from "cookie-parser";
+import passport from "./Config/passport.js";
 import homeRouter from "./Routes/home.route.js";
 import authRouter from "./Routes/auth.route.js";
 import getMeRouter from "./Routes/getMe.route.js";
@@ -11,6 +12,7 @@ import refreshRouter from "./Routes/refresh.route.js";
 
 const app = express();
 app.use(cookieParser());
+app.use(passport.initialize());
 
 app.use(
     cors({
