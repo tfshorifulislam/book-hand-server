@@ -1,6 +1,6 @@
 import { Router } from "express";
-import passport from "../Config/passport.js";
-import { googleCallback } from "../Controllers/google.controller.js";
+import passport from "../../Config/passport.js";
+import { googleCallback } from "../../Controllers/Authentication_Controllers/google.controller.js";
 const router = Router();
 
 // Start Google login

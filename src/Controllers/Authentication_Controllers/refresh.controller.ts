@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 
-import { prisma } from "../lib/prisma.js";
-import {generateAccessToken, generateRefreshToken, verifyRefreshToken, } from "../utils/jwt.js";
+import { prisma } from "../../lib/prisma.js";
+import {generateAccessToken, generateRefreshToken, verifyRefreshToken, } from "../../utils/jwt.js";
 
 export const refresh = async (req: Request, res: Response) => {
     try {

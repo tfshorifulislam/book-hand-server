@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
-import { prisma } from "../lib/prisma.js";
-import { generateResetToken } from "../utils/password-reset.js";
-import { transporter } from "../Config/mail.js";
+import { prisma } from "../../lib/prisma.js";
+import { generateResetToken } from "../../utils/password-reset.js";
+import { transporter } from "../../Config/mail.js";
 
 export const forgotPassword = async (
     req: Request,

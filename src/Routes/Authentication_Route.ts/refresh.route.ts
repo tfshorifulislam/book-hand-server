@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { refresh } from "../Controllers/refresh.controller.js";
+import { refresh } from "../../Controllers/Authentication_Controllers/refresh.controller.js";
 
 const router = Router();
 

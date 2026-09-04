@@ -1,7 +1,8 @@
 import type { Request, Response } from "express";
-import { prisma } from "../lib/prisma.js";
 import bcrypt from "bcryptjs";
-import { generateAccessToken, generateRefreshToken } from "../utils/jwt.js";
+import { prisma } from "../../lib/prisma.js";
+import { generateAccessToken, generateRefreshToken } from "../../utils/jwt.js";
+
 
 export const login = async (req: Request, res: Response) => {
     try {
