@@ -1,67 +1,51 @@
-import type { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import { prisma } from "../../lib/prisma.js";
 import { generateAccessToken, generateRefreshToken } from "../../utils/jwt.js";
-
-
-export const login = async (req: Request, res: Response) => {
+export const login = async (req, res) => {
     try {
         const { email, password } = req.body;
-
         if (!email || !password) {
             return res.status(400).json({
                 success: false,
                 message: "Email and password are required",
             });
         }
-
         const user = await prisma.user.findUnique({
             where: { email },
         });
-
         if (!user || !user.password) {
             return res.status(401).json({
                 success: false,
                 message: "Invalid email or password",
             });
         }
-
-        const isPasswordValid = await bcrypt.compare(
-            password,
-            user.password
-        );
-
+        const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
             return res.status(401).json({
                 success: false,
                 message: "Invalid email or password",
             });
         }
-
         const accessToken = generateAccessToken(user.id);
         const refreshToken = generateRefreshToken(user.id);
-
         await prisma.user.update({
             where: { id: user.id },
             data: {
                 refreshToken,
             },
         });
-
         res.cookie("accessToken", accessToken, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    maxAge: 15 * 60 * 1000,
-});
-
-res.cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    maxAge: 24 * 60 * 60 * 1000,
-});
-
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+            maxAge: 15 * 60 * 1000,
+        });
+        res.cookie("refreshToken", refreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+            maxAge: 24 * 60 * 60 * 1000,
+        });
         return res.status(200).json({
             success: true,
             message: "Login successful",
@@ -73,9 +57,9 @@ res.cookie("refreshToken", refreshToken, {
                 },
             },
         });
-    } catch (error) {
+    }
+    catch (error) {
         console.error(error);
-
         return res.status(500).json({
             success: false,
             message: "Something went wrong",
