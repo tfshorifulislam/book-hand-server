@@ -10,6 +10,8 @@ import logout from "./Routes/logout.route.js";
 import login from "./Routes/login.router.js";
 import refreshRouter from "./Routes/refresh.route.js";
 import googleRouter from "./Routes/google.route.js";
+import forgotPasswordRouter from "./Routes/forgotPassword.route.js";
+import resetPasswordRouter from "./Routes/reset.Password.route.js";
 
 const app = express();
 app.use(cookieParser());
@@ -39,5 +41,9 @@ app.use("/api", login);
 app.use("/api/auth", refreshRouter);
 
 app.use("/api/auth", googleRouter);
+
+app.use("/api/auth", forgotPasswordRouter);
+
+app.use("/api/auth", resetPasswordRouter);
 
 export default app;
