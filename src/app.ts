@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import homeRouter from './Routes/home.route.js';
+import getBooks from './Routes/books.route.js';
 
 
 const app = express();
@@ -10,6 +11,7 @@ app.use(express.json());
 // Home route
 app.use("/", homeRouter);
 
-//
+//get books route;
+app.use('/api', getBooks)
 
 export default app;
