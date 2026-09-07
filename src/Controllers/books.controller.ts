@@ -11,13 +11,13 @@ export const getBooks = async (req: Request, res: Response) => {
             message: 'Book listings fetched successfully',
             data: listings,
         });
+
     } catch (error) {
 
         res.status(500).json({
             success: false,
             message: 'Failed to fetch book listings',
         });
-
     }
 
 }

@@ -12,6 +12,6 @@ app.use(express.json());
 app.use("/", homeRouter);
 
 //get books route;
-app.use('/api', getBooks)
+app.use('/api', getBooks);
 
 export default app;
