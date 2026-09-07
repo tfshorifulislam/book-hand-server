@@ -6,3 +6,34 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model Book {
+  id          String   @id @default(uuid())
+  title       String
+  author      String
+  description String
+  coverImage  String
+  category    String
+  language    String
+  publishedAt DateTime @default(now())
+  updateAt    DateTime @updatedAt
+
+  listings BookListing[]
+}
+
+model BookListing {
+  id String @id @default(uuid())
+
+  bookId   String
+  sellerId String
+
+  price       Float
+  condition   String
+  description String?
+  status      String  @default("AVAILABLE")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  book Book @relation(fields: [bookId], references: [id])
+}
