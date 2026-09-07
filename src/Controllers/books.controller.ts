@@ -1,21 +1,21 @@
 import type { Request, Response } from "express";
-import { getAllBooks } from "../Services/books.service.js";
+import { getAllBookListings } from "../Services/books.service.js";
 
 export const getBooks = async (req: Request, res: Response) => {
 
     try {
-        const books = await getAllBooks();
+        const listings = await getAllBookListings();
 
         res.status(200).json({
             success: true,
-            message: 'Books fetched successfully',
-            data: books,
+            message: 'Book listings fetched successfully',
+            data: listings,
         });
     } catch (error) {
 
         res.status(500).json({
             success: false,
-            messasge: 'Failed to fetch books',
+            message: 'Failed to fetch book listings',
         });
 
     }

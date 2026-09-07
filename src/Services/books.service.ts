@@ -1,6 +1,16 @@
 import { prisma } from "../lib/prisma.js"
 
-export const getAllBooks = async () => {
-    const books = await prisma.book.findMany();
-    return books;
+export const getAllBookListings = async () => {
+    
+    const listings = await prisma.bookListing.findMany({
+        where:{
+            status: 'Available',
+        },
+        include:{
+            book:true,
+        },
+
+    });
+
+    return listings;
 }
