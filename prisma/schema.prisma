@@ -16,12 +16,15 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   account       Account[]
+  sessions      Session[]
+
+  @@map("user")
 }
 
 model Account {
   id                    String    @id @default(uuid())
-  accountId             String    @default(uuid())
-  providerId            String    @default(uuid())
+  accountId             String
+  providerId            String
   userId                String
   accessToken           String?
   refreshToken          String?
@@ -32,7 +35,34 @@ model Account {
   password              String?
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
-  user                  User      @relation(fields: [userId], references: [id])
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("account")
+}
+
+model Session {
+  id        String   @id @default(ulid())
+  expiresAt DateTime
+  token     String @unique
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("session")
+}
+
+model Verification {
+  id         String   @id @default(ulid())
+  identifier String @unique
+  value      String @unique
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("verification")
 }
 
 model Book {
@@ -44,7 +74,7 @@ model Book {
   category    String
   language    String
   publishedAt DateTime @default(now())
-  updateAt    DateTime @updatedAt
+  updatedAt    DateTime @updatedAt
 
   listings BookListing[]
 }
