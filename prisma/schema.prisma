@@ -1,24 +1,14 @@
-generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
-}
-
-datasource db {
-  provider = "postgresql"
-}
-
 model User {
-  id            String    @id
+  id            String   @id
   name          String
-  email         String    @unique
-  emailVerified Boolean   @default(false)
+  email         String   @unique
+  emailVerified Boolean  @default(false)
   image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
-  accounts      Account[]
-  sessions      Session[]
-  listings      BookListing[]
+  accounts Account[]
+  sessions Session[]
 
   @@map("user")
 }
@@ -34,6 +24,8 @@ model Session {
   userId    String
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("session")
 }
 
 model Account {
@@ -53,6 +45,8 @@ model Account {
   issuer                String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("account")
 }
 
 model Verification {
@@ -62,33 +56,6 @@ model Verification {
   expiresAt  DateTime
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-}
 
-model Book {
-  id          String        @id @default(uuid())
-  title       String
-  author      String
-  description String
-  coverImage  String
-  category    String
-  language    String
-  publishedAt DateTime      @default(now())
-  updateAt    DateTime      @updatedAt
-
-  listings    BookListing[]
-}
-
-model BookListing {
-  id          String   @id @default(uuid())
-  bookId      String
-  sellerId    String
-  price       Float
-  condition   String
-  description String?
-  status      String   @default("AVAILABLE")
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  book   Book @relation(fields: [bookId], references: [id])
-  seller User @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  @@map("verification")
 }
