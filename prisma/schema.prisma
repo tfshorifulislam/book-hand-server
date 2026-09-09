@@ -1,3 +1,12 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
 model User {
   id            String   @id
   name          String
@@ -7,55 +16,31 @@ model User {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  accounts Account[]
-  sessions Session[]
-
   @@map("user")
 }
 
-model Session {
-  id        String   @id
-  expiresAt DateTime
-  token     String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  ipAddress String?
-  userAgent String?
-  userId    String
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map("session")
+model Book {
+  id          String        @id @default(uuid())
+  title       String
+  author      String
+  description String
+  coverImage  String
+  category    String
+  language    String
+  publishedAt DateTime      @default(now())
+  updateAt    DateTime      @updatedAt
+  listings    BookListing[]
 }
 
-model Account {
-  id                    String    @id
-  accountId             String
-  providerId            String
-  userId                String
-  accessToken           String?
-  refreshToken          String?
-  idToken               String?
-  accessTokenExpiresAt  DateTime?
-  refreshTokenExpiresAt DateTime?
-  scope                 String?
-  password              String?
-  createdAt             DateTime  @default(now())
-  updatedAt             DateTime  @updatedAt
-  issuer                String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map("account")
-}
-
-model Verification {
-  id         String   @id
-  identifier String
-  value      String
-  expiresAt  DateTime
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-
-  @@map("verification")
+model BookListing {
+  id          String   @id @default(uuid())
+  bookId      String
+  sellerId    String
+  price       Float
+  condition   String
+  description String?
+  status      String   @default("AVAILABLE")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  book        Book     @relation(fields: [bookId], references: [id])
 }
