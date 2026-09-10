@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import { getAllBookListings } from "../Services/books.service.js";
 
-export const getBooks = async (req: Request, res: Response) => {
+export const getBooksController = async (req: Request, res: Response) => {
 
     try {
 

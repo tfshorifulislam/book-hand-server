@@ -5,6 +5,7 @@ export const getAllBookListings = async (page: number, limit: number) => {
     const skip = (page - 1) * limit;
 
     const [listings, total] = await prisma.$transaction([
+
         prisma.bookListing.findMany({
             where: {
                 status: 'AVAILABLE',
@@ -43,6 +44,7 @@ export const getAllBookListings = async (page: number, limit: number) => {
                 status: "AVAILABLE",
             },
         }),
+        
     ]);
 
 
