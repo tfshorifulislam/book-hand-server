@@ -5,23 +5,24 @@ export const getBooks = async (req: Request, res: Response) => {
 
     try {
 
-        const page = Number(req.query.page) || 1;
-        const limit = Number(req.query.limit) || 10;
+        const page = Math.max(Number(req.query.page) || 1, 1);
 
-        const listings = await getAllBookListings(page, limit);
+        const limit = Math.min(
+            Math.max(Number(req.query.limit) || 10, 1),
+            10
+        )
+
+        const result = await getAllBookListings(page, limit);
 
         res.status(200).json({
             success: true,
             message: 'Book listings fetched successfully',
-            data: listings,
-            pagination: {
-                page,
-                limit
-            }
+            data: result.listings,
+            pagination: result.pagination,
         });
 
     } catch (error) {
-
+        console.log(error)
         res.status(500).json({
             success: false,
             message: 'Failed to fetch book listings',
