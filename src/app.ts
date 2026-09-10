@@ -3,6 +3,7 @@ import cors from "cors";
 import homeRouter from './Routes/home.route.js';
 import booksRouter from './Routes/books.route.js';
 import userIdProfile from './Routes/userId.Profile.Route.js';
+import sellBookRouter from './Routes/Sell_Book_route.js';
 
 
 const app = express();
@@ -17,5 +18,8 @@ app.use('/api', booksRouter);
 
 //get user profile;
 app.use('/api' , userIdProfile)
+
+//post sell book router;
+app.use('/api', sellBookRouter)
 
 export default app;
