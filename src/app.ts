@@ -17,9 +17,9 @@ app.use("/", homeRouter);
 app.use('/api', booksRouter);
 
 //get user profile;
-app.use('/api' , userIdProfile)
+app.use('/api' , userIdProfile);
 
 //post sell book router;
-app.use('/api', sellBookRouter)
+app.use('/api', sellBookRouter);
 
 export default app;
