@@ -2,7 +2,7 @@ import type { NextFunction, Request, Response } from "express";
 import { createRemoteJWKSet, jwtVerify } from "jose-cjs";
 
 const JWKS = createRemoteJWKSet(
-    new URL(`${process.env.BETTER_AUTH_URL}/api/auth/jwks`)
+    new URL(`${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/auth/jwks`)
 );
 
 const verifyToken = async (
