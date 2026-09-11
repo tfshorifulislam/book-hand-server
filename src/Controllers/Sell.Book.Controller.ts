@@ -1,10 +1,10 @@
 import type { Request, Response } from "express";
 import { sellBookService } from "../Services/sell.book.service.js";
 
+
 export const sellBook = async (req: Request, res: Response) => {
     try {
         const {
-            userId,
             title,
             author,
             category,
@@ -14,6 +14,19 @@ export const sellBook = async (req: Request, res: Response) => {
             price,
             condition,
         } = req.body;
+        
+        console.log({
+    title,
+    author,
+    category,
+    language,
+    description,
+    coverImage,
+    price,
+    condition,
+});
+
+        const userId = req.user?.id;
 
         if (!userId) {
             return res.status(401).json({

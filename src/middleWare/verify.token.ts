@@ -1,48 +1,31 @@
 import type { NextFunction, Request, Response } from "express";
-import { createRemoteJWKSet, jwtVerify } from "jose-cjs";
 
-const JWKS = createRemoteJWKSet(
-    new URL(`${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/auth/jwks`)
-);
 
-const verifyToken = async (
+const verifyUser = (
     req: Request,
     res: Response,
     next: NextFunction
 ) => {
-    const authHeader = req.headers.authorization;
+    const secret = req.headers["x-internal-secret"];
+    const userId = req.headers["x-user-id"];
 
-    console.log("token with headers:", authHeader);
-
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-        return res.status(401).json({
+    if (
+        secret !== process.env.BACKEND_INTERNAL_SECRET ||
+        !userId ||
+        typeof userId !== "string"
+    ) {
+        res.status(401).json({
             message: "Unauthorized",
         });
+
+        return;
     }
 
-    const token = authHeader.split(" ")[1];
+    req.user = {
+        id: userId,
+    };
 
-    if (!token) {
-        return res.status(401).json({
-            message: "Unauthorized",
-        });
-    }
-
-    try {
-        const { payload } = await jwtVerify(token, JWKS);
-
-        res.locals.user = payload;
-
-        console.log("payload:", payload);
-
-        next();
-    } catch (error) {
-        console.log("Token is not verified:", error);
-
-        return res.status(401).json({
-            message: "Unauthorized",
-        });
-    }
+    next();
 };
 
-export default verifyToken;
+export default verifyUser;
