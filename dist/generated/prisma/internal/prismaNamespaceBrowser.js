@@ -38,7 +38,14 @@ export const JsonNull = runtime.JsonNull;
  * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
  */
 export const AnyNull = runtime.AnyNull;
-export const ModelName = {};
+export const ModelName = {
+    User: 'User',
+    Account: 'Account',
+    Session: 'Session',
+    Verification: 'Verification',
+    Book: 'Book',
+    BookListing: 'BookListing'
+};
 /*
  * Enums
  */
@@ -48,3 +55,80 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
     RepeatableRead: 'RepeatableRead',
     Serializable: 'Serializable'
 });
+export const UserScalarFieldEnum = {
+    id: 'id',
+    name: 'name',
+    email: 'email',
+    emailVerified: 'emailVerified',
+    image: 'image',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const AccountScalarFieldEnum = {
+    id: 'id',
+    accountId: 'accountId',
+    providerId: 'providerId',
+    userId: 'userId',
+    issuer: 'issuer',
+    accessToken: 'accessToken',
+    refreshToken: 'refreshToken',
+    idToken: 'idToken',
+    accessTokenExpiresAt: 'accessTokenExpiresAt',
+    refreshTokenExpiresAt: 'refreshTokenExpiresAt',
+    scope: 'scope',
+    password: 'password',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const SessionScalarFieldEnum = {
+    id: 'id',
+    expiresAt: 'expiresAt',
+    token: 'token',
+    updatedAt: 'updatedAt',
+    createdAt: 'createdAt',
+    userAgent: 'userAgent',
+    ipAddress: 'ipAddress',
+    userId: 'userId'
+};
+export const VerificationScalarFieldEnum = {
+    id: 'id',
+    identifier: 'identifier',
+    value: 'value',
+    expiresAt: 'expiresAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const BookScalarFieldEnum = {
+    id: 'id',
+    title: 'title',
+    author: 'author',
+    description: 'description',
+    coverImage: 'coverImage',
+    category: 'category',
+    language: 'language',
+    publishedAt: 'publishedAt',
+    updatedAt: 'updatedAt'
+};
+export const BookListingScalarFieldEnum = {
+    id: 'id',
+    bookId: 'bookId',
+    sellerId: 'sellerId',
+    price: 'price',
+    condition: 'condition',
+    description: 'description',
+    status: 'status',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+export const SortOrder = {
+    asc: 'asc',
+    desc: 'desc'
+};
+export const QueryMode = {
+    default: 'default',
+    insensitive: 'insensitive'
+};
+export const NullsOrder = {
+    first: 'first',
+    last: 'last'
+};

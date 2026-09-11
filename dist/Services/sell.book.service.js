@@ -1,19 +1,5 @@
 import { prisma } from "../lib/prisma.js";
-
-type SellBookData = {
-    userId: string;
-    title: string;
-    author: string;
-    category: string;
-    language: string;
-    description: string;
-    coverImage: string;
-    price: number;
-    condition: string;
-};
-
-export const sellBookService = async (data: SellBookData) => {
-    
+export const sellBookService = async (data) => {
     const book = await prisma.book.create({
         data: {
             title: data.title,
@@ -24,7 +10,6 @@ export const sellBookService = async (data: SellBookData) => {
             coverImage: data.coverImage,
         },
     });
-
     const listing = await prisma.bookListing.create({
         data: {
             bookId: book.id,
@@ -33,6 +18,5 @@ export const sellBookService = async (data: SellBookData) => {
             condition: data.condition,
         },
     });
-
     return { book, listing, };
 };

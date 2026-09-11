@@ -1,14 +1,11 @@
 import { prisma } from "../lib/prisma.js";
-
-export const getAllBookListings = async (page: number, limit: number) => {
+export const getAllBookListings = async (page, limit) => {
     const skip = (page - 1) * limit;
-
     const [listings, total] = await prisma.$transaction([
         prisma.bookListing.findMany({
             where: {
-                status: "AVAILABLE",
+                status: 'AVAILABLE',
             },
-
             include: {
                 book: {
                     select: {
@@ -20,31 +17,26 @@ export const getAllBookListings = async (page: number, limit: number) => {
                         language: true,
                     },
                 },
-
                 seller: {
                     select: {
                         id: true,
                         name: true,
-                        image: true,
+                        image: true
                     },
                 },
             },
-
             skip,
             take: limit,
-
             orderBy: {
                 createdAt: "desc",
             },
         }),
-
         prisma.bookListing.count({
             where: {
                 status: "AVAILABLE",
             },
         }),
     ]);
-
     return {
         listings,
         pagination: {
