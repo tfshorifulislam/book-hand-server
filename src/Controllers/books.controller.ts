@@ -12,7 +12,13 @@ export const getBooksController = async (req: Request, res: Response) => {
             20
         )
 
-        const result = await getAllBookListings(page, limit);
+        const search =
+            typeof req.query.search === "string"
+                ? req.query.search.trim()
+                : "";
+
+
+        const result = await getAllBookListings(page, limit, search);
 
         res.status(200).json({
             success: true,
