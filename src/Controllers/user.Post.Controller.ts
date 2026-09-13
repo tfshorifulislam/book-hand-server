@@ -1,6 +1,5 @@
-import type {  Request, Response } from "express";
+import type { Request, Response } from "express";
 import { getUserBooksService } from "../Services/uses.Post.Service.js";
-
 
 export const getUserBooks = async (
   req: Request,
@@ -8,6 +7,13 @@ export const getUserBooks = async (
 ) => {
   try {
     const { userId } = req.params;
+
+    if (typeof userId !== "string") {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid user ID",
+      });
+    }
 
     const page = Math.max(
       Number(req.query.page) || 1,

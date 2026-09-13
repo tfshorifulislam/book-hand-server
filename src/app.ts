@@ -5,6 +5,7 @@ import booksRouter from './Routes/books.route.js';
 import userIdProfile from './Routes/userId.Profile.Route.js';
 import sellBookRouter from './Routes/Sell_Book_route.js';
 import booksDetailsRouter from './Routes/Book_Details_route.js';
+import profileRoutes from './Routes/user.Post.Route.js';
 
 
 const app = express();
@@ -25,6 +26,9 @@ app.use('/api' , userIdProfile);
 
 //post sell book router;
 app.use('/api', sellBookRouter);
+
+// user post get in profile;
+app.use("/api/profile", profileRoutes);
 
 
 export default app;
