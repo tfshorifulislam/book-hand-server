@@ -7,13 +7,19 @@ export const deleteBookListingController = async (
 ) => {
     try {
         const { listingId } = req.params;
-
         const userId = req.user?.id;
 
-        if (!listingId) {
+        if (typeof listingId !== "string") {
             return res.status(400).json({
                 success: false,
-                message: "Listing ID is required",
+                message: "Invalid listing ID",
+            });
+        }
+
+        if (!userId) {
+            return res.status(401).json({
+                success: false,
+                message: "Unauthorized",
             });
         }
 
