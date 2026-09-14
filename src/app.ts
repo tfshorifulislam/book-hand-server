@@ -6,6 +6,7 @@ import userIdProfile from './Routes/userId.Profile.Route.js';
 import sellBookRouter from './Routes/Sell_Book_route.js';
 import booksDetailsRouter from './Routes/Book_Details_route.js';
 import profileRoutes from './Routes/user.Post.Route.js';
+import deletePost from './Routes/book.Delete.Route.js';
 
 
 const app = express();
@@ -22,7 +23,7 @@ app.use('/api', booksRouter);
 app.use('/api', booksDetailsRouter);
 
 //get user profile;
-app.use('/api' , userIdProfile);
+app.use('/api', userIdProfile);
 
 //post sell book router;
 app.use('/api', sellBookRouter);
@@ -30,5 +31,7 @@ app.use('/api', sellBookRouter);
 // user post get in profile;
 app.use("/api/profile", profileRoutes);
 
+//user post delete route;
+app.use('/api/delete', deletePost)
 
 export default app;
