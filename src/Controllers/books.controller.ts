@@ -17,6 +17,7 @@ export const getBooksController = async (req: Request, res: Response) => {
                 ? req.query.search.trim()
                 : "";
 
+console.log("SEARCH:", search);
 
         const result = await getAllBookListings(page, limit, search);
 
