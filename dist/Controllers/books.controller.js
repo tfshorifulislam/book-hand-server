@@ -10,8 +10,10 @@ export const getBooksController = async (req, res) => {
         console.log("SEARCH:", search);
         // Create unique cache key
         const cacheKey = `books:page=${page}:limit=${limit}:search=${search}`;
+        const redisStart = performance.now();
         // 1. Check Redis
         const cachedData = await redis.get(cacheKey);
+        console.log("REDIS GET TIME:", (performance.now() - redisStart).toFixed(2), "ms");
         console.log("REDIS RESULT:", cachedData ? "FOUND" : "NOT FOUND");
         if (cachedData) {
             console.log("CACHE HIT:", cacheKey);

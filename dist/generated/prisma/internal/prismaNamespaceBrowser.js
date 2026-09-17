@@ -44,7 +44,8 @@ export const ModelName = {
     Session: 'Session',
     Verification: 'Verification',
     Book: 'Book',
-    BookListing: 'BookListing'
+    BookListing: 'BookListing',
+    SavedBook: 'SavedBook'
 };
 /*
  * Enums
@@ -119,6 +120,12 @@ export const BookListingScalarFieldEnum = {
     status: 'status',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
+};
+export const SavedBookScalarFieldEnum = {
+    id: 'id',
+    userId: 'userId',
+    listingId: 'listingId',
+    createdAt: 'createdAt'
 };
 export const SortOrder = {
     asc: 'asc',

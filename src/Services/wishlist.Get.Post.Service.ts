@@ -7,14 +7,46 @@ export const getWishlistService = async (
         where: {
             userId,
         },
-        include: {
+        select: {
+            id: true,
+            userId: true,
+            listingId: true,
+            createdAt: true,
+
             listing: {
-                include: {
-                    book: true,
-                    seller: true,
+                select: {
+                    id: true,
+                    bookId: true,
+                    sellerId: true,
+                    price: true,
+                    condition: true,
+                    description: true,
+                    status: true,
+                    createdAt: true,
+                    updatedAt: true,
+
+                    book: {
+                        select: {
+                            id: true,
+                            title: true,
+                            author: true,
+                            coverImage: true,
+                            category: true,
+                            language: true,
+                        },
+                    },
+
+                    seller: {
+                        select: {
+                            id: true,
+                            name: true,
+                            image: true,
+                        },
+                    },
                 },
             },
         },
+
         orderBy: {
             createdAt: "desc",
         },
