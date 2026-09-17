@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import { getAllBookListings } from "../Services/books.service.js";
+import redis from "../config/redis.js";
 
 export const getBooksController = async (req: Request, res: Response) => {
 
@@ -17,9 +18,41 @@ export const getBooksController = async (req: Request, res: Response) => {
                 ? req.query.search.trim()
                 : "";
 
-console.log("SEARCH:", search);
+        console.log("SEARCH:", search);
+
+        // Create unique cache key
+        const cacheKey = `books:page=${page}:limit=${limit}:search=${search}`;
+
+        // 1. Check Redis
+        const cachedData = await redis.get(cacheKey);
+
+        if (cachedData) {
+            console.log("CACHE HIT:", cacheKey);
+
+            const result = JSON.parse(cachedData);
+
+            return res.status(200).json({
+                success: true,
+                message: "Book listings fetched successfully",
+                data: result.listings,
+                pagination: result.pagination,
+            });
+        }
+
+        console.log("CACHE MISS:", cacheKey);
 
         const result = await getAllBookListings(page, limit, search);
+
+        await redis.set(
+            cacheKey,
+            JSON.stringify(result),
+            {
+                EX: 10
+            }
+        );
+
+        console.log("CACHE SAVED:", cacheKey);
+
 
         res.status(200).json({
             success: true,

@@ -34,4 +34,5 @@ app.use("/api/profile", profileRoutes);
 //user post delete route;
 app.use('/api/delete', deletePost)
 
+
 export default app;

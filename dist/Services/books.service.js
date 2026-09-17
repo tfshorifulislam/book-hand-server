@@ -1,11 +1,32 @@
 import { prisma } from "../lib/prisma.js";
-export const getAllBookListings = async (page, limit) => {
+export const getAllBookListings = async (page, limit, search) => {
     const skip = (page - 1) * limit;
+    const where = {
+        status: "AVAILABLE",
+        ...(search && {
+            OR: [
+                {
+                    book: {
+                        title: {
+                            contains: search,
+                            mode: "insensitive",
+                        },
+                    },
+                },
+                {
+                    book: {
+                        author: {
+                            contains: search,
+                            mode: "insensitive",
+                        },
+                    },
+                },
+            ],
+        }),
+    };
     const [listings, total] = await prisma.$transaction([
         prisma.bookListing.findMany({
-            where: {
-                status: 'AVAILABLE',
-            },
+            where,
             include: {
                 book: {
                     select: {
@@ -21,7 +42,7 @@ export const getAllBookListings = async (page, limit) => {
                     select: {
                         id: true,
                         name: true,
-                        image: true
+                        image: true,
                     },
                 },
             },
@@ -32,9 +53,7 @@ export const getAllBookListings = async (page, limit) => {
             },
         }),
         prisma.bookListing.count({
-            where: {
-                status: "AVAILABLE",
-            },
+            where,
         }),
     ]);
     return {
