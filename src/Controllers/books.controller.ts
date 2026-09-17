@@ -26,6 +26,8 @@ export const getBooksController = async (req: Request, res: Response) => {
         // 1. Check Redis
         const cachedData = await redis.get(cacheKey);
 
+        console.log("REDIS RESULT:", cachedData ? "FOUND" : "NOT FOUND");
+
         if (cachedData) {
             console.log("CACHE HIT:", cacheKey);
 
@@ -47,7 +49,7 @@ export const getBooksController = async (req: Request, res: Response) => {
             cacheKey,
             JSON.stringify(result),
             {
-                EX: 10
+                EX: 300
             }
         );
 

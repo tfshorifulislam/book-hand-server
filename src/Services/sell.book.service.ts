@@ -1,3 +1,4 @@
+import redis from "../config/redis.js";
 import { prisma } from "../lib/prisma.js";
 
 type SellBookData = {
@@ -13,7 +14,7 @@ type SellBookData = {
 };
 
 export const sellBookService = async (data: SellBookData) => {
-    
+
     const book = await prisma.book.create({
         data: {
             title: data.title,
@@ -33,6 +34,15 @@ export const sellBookService = async (data: SellBookData) => {
             condition: data.condition,
         },
     });
+
+
+    // Delete all books cache
+    const keys = await redis.keys("books:*");
+
+    if (keys.length > 0) {
+        await redis.del(keys);
+        console.log("BOOK CACHE INVALIDATED:", keys);
+    }
 
     return { book, listing, };
 };
