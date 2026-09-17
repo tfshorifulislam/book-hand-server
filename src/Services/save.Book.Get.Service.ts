@@ -12,6 +12,6 @@ export const getSavedBookService = async (
             },
         },
     });
-
+console.log("SAVED BOOK RESULT:", savedBook);
     return !!savedBook;
 };
