@@ -8,6 +8,7 @@ import booksDetailsRouter from './Routes/Book_Details_route.js';
 import profileRoutes from './Routes/user.Post.Route.js';
 import deletePost from './Routes/book.Delete.Route.js';
 import bookSaveRoute from './Routes/books.Save.routes.js';
+import deleteSaveRoute from './Routes/delete.Save.route.js';
 
 
 const app = express();
@@ -38,5 +39,7 @@ app.use('/api/delete', deletePost)
 //book save route 
 app.use('/api/', bookSaveRoute)
 
+// book save delete;
+app.use("/api", deleteSaveRoute);
 
 export default app;
