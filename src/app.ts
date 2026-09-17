@@ -7,6 +7,7 @@ import sellBookRouter from './Routes/Sell_Book_route.js';
 import booksDetailsRouter from './Routes/Book_Details_route.js';
 import profileRoutes from './Routes/user.Post.Route.js';
 import deletePost from './Routes/book.Delete.Route.js';
+import bookSaveRoute from './Routes/books.Save.routes.js';
 
 
 const app = express();
@@ -33,6 +34,9 @@ app.use("/api/profile", profileRoutes);
 
 //user post delete route;
 app.use('/api/delete', deletePost)
+
+//book save route 
+app.use('/api/', bookSaveRoute)
 
 
 export default app;

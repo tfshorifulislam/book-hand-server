@@ -16,10 +16,10 @@ export const saveBookController = async (
             });
         }
 
-        if (!listingId) {
+        if (!listingId || Array.isArray(listingId)) {
             return res.status(400).json({
                 success: false,
-                message: "Listing ID is required",
+                message: "Invalid listing ID",
             });
         }
 
