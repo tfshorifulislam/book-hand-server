@@ -23,16 +23,14 @@ export const saveBookController = async (
             });
         }
 
-        const savedBook = await saveBookService(
-            userId,
-            listingId
-        );
+        const savedBook = await saveBookService( userId, listingId );
 
         return res.status(201).json({
             success: true,
             message: "Book saved successfully",
             data: savedBook,
         });
+        
     } catch (error) {
         console.error("Save book error:", error);
 
