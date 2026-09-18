@@ -4,9 +4,7 @@ import { getSavedBookController } from "../Controllers/save.Book.Get.Controller.
 
 const router = Router();
 
-router.get(
-    "/books/:listingId/save",
-    getSavedBookController
+router.get( "/books/:listingId/save", getSavedBookController
 );
 
 export default router;

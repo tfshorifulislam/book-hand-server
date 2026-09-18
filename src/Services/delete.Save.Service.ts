@@ -1,4 +1,5 @@
 import { prisma } from "../lib/prisma.js";
+import redis from "../config/redis.js";
 
 export const deleteSavedBookService = async (
     userId: string,
@@ -12,6 +13,12 @@ export const deleteSavedBookService = async (
             },
         },
     });
+
+    const keys = await redis.keys(`books:user=${userId}:*`);
+
+    if (keys.length > 0) {
+        await redis.del(keys);
+    }
 
     return deletedBook;
 };

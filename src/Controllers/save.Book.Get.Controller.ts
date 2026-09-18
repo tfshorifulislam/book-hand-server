@@ -2,10 +2,7 @@ import type { Request, Response } from "express";
 
 import { getSavedBookService } from "../Services/save.Book.Get.Service.js";
 
-export const getSavedBookController = async (
-    req: Request,
-    res: Response
-) => {
+export const getSavedBookController = async ( req: Request, res: Response) => {
     try {
         const { listingId } = req.params;
         const userId = req.headers["x-user-id"];
