@@ -1,8 +1,7 @@
 import { prisma } from "../lib/prisma.js";
-export const getAllBookListings = async (page, limit, search) => {
+export const getAllBookListings = async (page, limit, search, userId) => {
     const skip = (page - 1) * limit;
-    const where = {
-        status: "AVAILABLE",
+    const where = { status: "AVAILABLE",
         ...(search && {
             OR: [
                 {
@@ -56,8 +55,36 @@ export const getAllBookListings = async (page, limit, search) => {
             where,
         }),
     ]);
+    if (!userId) {
+        return {
+            listings: listings.map((listing) => ({
+                ...listing,
+                isSaved: false,
+            })),
+            pagination: {
+                page,
+                limit,
+                total,
+                totalPages: Math.ceil(total / limit),
+            },
+        };
+    }
+    const listingIds = listings.map((listing) => listing.id);
+    const savedBooks = await prisma.savedBook.findMany({
+        where: {
+            userId,
+            listingId: {
+                in: listingIds,
+            },
+        },
+        select: {
+            listingId: true,
+        },
+    });
+    const savedListingIds = new Set(savedBooks.map((savedBook) => savedBook.listingId));
+    const listingsWithSavedStatus = listings.map((listing) => ({ ...listing, isSaved: savedListingIds.has(listing.id), }));
     return {
-        listings,
+        listings: listingsWithSavedStatus,
         pagination: {
             page,
             limit,
