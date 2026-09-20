@@ -7,24 +7,24 @@ export const getBooksController = async (
     res: Response
 ) => {
     try {
-        // const page = Math.max(
-        //     Number(req.query.page) || 1,
-        //     1
-        // );
+        const page = Math.max(
+            Number(req.query.page) || 1,
+            1
+        );
 
-        // const limit = Math.min(
-        //     Math.max(Number(req.query.limit) || 12, 1),
-        //     20
-        // );
+        const limit = Math.min(
+            Math.max(Number(req.query.limit) || 12, 1),
+            20
+        );
 
-        const userId = req.headers;
+        const userId = req.headers["x-user-id"];
 
-        // const search =
-        //     typeof req.query.search === "string"
-        //         ? req.query.search.trim()
-        //         : "";
+        const search =
+            typeof req.query.search === "string"
+                ? req.query.search.trim()
+                : "";
 
-        // console.log("SEARCH:", search);
+        console.log("SEARCH:", search);
 
         /*
          * IMPORTANT:
@@ -33,50 +33,52 @@ export const getBooksController = async (
          * তাই logged-in user হলে userId cache key-তে রাখতে হবে।
          * Guest-এর জন্য "guest".
          */
-        // const cacheUser =
-        //     typeof userId === "string"
-        //         ? userId
-        //         : "guest";
+        const cacheUser =
+            typeof userId === "string"
+                ? userId
+                : "guest";
 
-        // const cacheKey =
-        //     `books:user=${cacheUser}:page=${page}:limit=${limit}:search=${search}`;
+        const cacheKey =
+            `books:user=${cacheUser}:page=${page}:limit=${limit}:search=${search}`;
 
-        // // Check Redis
-        // const redisStart = performance.now();
+        // Check Redis
+        const redisStart = performance.now();
 
-        // const cachedData = await redis.get(cacheKey);
+        const cachedData = await redis.get(cacheKey);
 
-        // console.log(
-        //     "REDIS GET TIME:",
-        //     (performance.now() - redisStart).toFixed(2),
-        //     "ms"
-        // );
+        console.log(
+            "REDIS GET TIME:",
+            (performance.now() - redisStart).toFixed(2),
+            "ms"
+        );
 
-        // console.log(
-        //     "REDIS RESULT:",
-        //     cachedData ? "FOUND" : "NOT FOUND"
-        // );
+        console.log(
+            "REDIS RESULT:",
+            cachedData ? "FOUND" : "NOT FOUND"
+        );
 
-        // if (cachedData) {
-        //     console.log("CACHE HIT:", cacheKey);
+        if (cachedData) {
+            console.log("CACHE HIT:", cacheKey);
 
-        //     const result = JSON.parse(cachedData);
+            const result = JSON.parse(cachedData);
 
-        //     return res.status(200).json({
-        //         success: true,
-        //         message: "Book listings fetched successfully",
-        //         data: result.listings,
-        //         pagination: result.pagination,
-        //     });
-        // }
+            return res.status(200).json({
+                success: true,
+                message: "Book listings fetched successfully",
+                data: result.listings,
+                pagination: result.pagination,
+            });
+        }
 
-        // console.log("CACHE MISS:", cacheKey);
+        console.log("CACHE MISS:", cacheKey);
 
         const result = await getAllBookListings(
-            // page,
-            // limit,
-            // search,
-            typeof userId === "string" ? userId : undefined
+            page,
+            limit,
+            search,
+            typeof userId === "string"
+                ? userId
+                : undefined
         );
 
         await redis.set(
