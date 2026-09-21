@@ -1,10 +1,8 @@
 import { prisma } from "../lib/prisma.js";
 import redis from "../config/redis.js";
 
-export const deleteSavedBookService = async (
-    userId: string,
-    listingId: string
-) => {
+export const deleteSavedBookService = async (userId: string, listingId: string) => {
+    
     const deletedBook = await prisma.savedBook.delete({
         where: {
             userId_listingId: {
@@ -17,7 +15,7 @@ export const deleteSavedBookService = async (
     const keys = await redis.keys(`books:user=${userId}:*`);
 
     if (keys.length > 0) {
-        await redis.del(keys);
+        await redis.del(...keys);
     }
 
     return deletedBook;
