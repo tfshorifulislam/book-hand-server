@@ -2,10 +2,8 @@ import type { Request, Response } from "express";
 import { getUserBooksService } from "../Services/uses.Post.Service.js";
 import redis from "../config/redis.js";
 
-export const getUserBooks = async (
-  req: Request,
-  res: Response
-) => {
+export const getUserBooks = async (req: Request, res: Response) => {
+  
   try {
     const { userId } = req.params;
 
@@ -16,32 +14,24 @@ export const getUserBooks = async (
       });
     }
 
-    const page = Math.max(
-      Number(req.query.page) || 1,
-      1
-    );
+    const page = Math.max(Number(req.query.page) || 1, 1);
 
-    const limit = Math.min(
-      Math.max(Number(req.query.limit) || 10, 1),
-      50
-    );
+    const limit = Math.min(Math.max(Number(req.query.limit) || 10, 1), 50);
 
     const cacheKey = `profile:books:userId=${userId}:page=${page}:limit=${limit}`;
+
     const cachedData = await redis.get(cacheKey);
 
     if (cachedData) {
       console.log("PROFILE BOOKS CACHE HIT:", cacheKey);
 
-      const result = JSON.parse(cachedData);
-
       return res.status(200).json({
         success: true,
-        ...result,
+        ...cachedData,
       });
     }
 
     console.log("PROFILE BOOKS CACHE MISS:", cacheKey);
-
 
     const result = await getUserBooksService(
       userId,
@@ -50,13 +40,7 @@ export const getUserBooks = async (
     );
 
     // Save to Redis for 5 minutes
-    await redis.set(
-      cacheKey,
-      JSON.stringify(result),
-      {
-        EX: 300,
-      }
-    );
+    await redis.set(cacheKey, result, { ex: 300, });
 
     console.log("PROFILE BOOKS CACHE SAVED:", cacheKey);
 
@@ -64,6 +48,7 @@ export const getUserBooks = async (
       success: true,
       ...result,
     });
+
   } catch (error) {
     console.error("Get user books error:", error);
 
