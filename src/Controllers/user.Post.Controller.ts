@@ -16,7 +16,7 @@ export const getUserBooks = async (req: Request, res: Response) => {
 
     const page = Math.max(Number(req.query.page) || 1, 1);
 
-    const limit = Math.min(Math.max(Number(req.query.limit) || 10, 1), 50);
+    const limit = Math.min(Math.max(Number(req.query.limit) || 9, 1), 9);
 
     const cacheKey = `profile:books:userId=${userId}:page=${page}:limit=${limit}`;
 

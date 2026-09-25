@@ -3,7 +3,7 @@ import { prisma } from "../lib/prisma.js";
 export const getUserBooksService = async (
     userId: string,
     page = 1,
-    limit = 10
+    limit = 9
 ) => {
     const skip = (page - 1) * limit;
 
