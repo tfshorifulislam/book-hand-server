@@ -10,6 +10,7 @@ import deletePost from './Routes/book.Delete.Route.js';
 import bookSaveRoute from './Routes/books.Save.routes.js';
 import deleteSaveRoute from './Routes/delete.Save.route.js';
 import wishlistGetPostRoute from './Routes/wishlist.Get.Post.route.js';
+import profileUpdate from './Routes/Profile.Update.Route.js';
 
 
 const app = express();
@@ -49,5 +50,8 @@ app.use("/api", deleteSaveRoute);
 
 // get wishlist post;
 app.use("/api", wishlistGetPostRoute);
+
+// profile update route
+app.use("/api", profileUpdate);
 
 export default app;
