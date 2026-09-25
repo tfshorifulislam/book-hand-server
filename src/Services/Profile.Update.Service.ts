@@ -1,26 +1,34 @@
 import { prisma } from "../lib/prisma.js";
 
+type UpdateProfileData = {
+    userId: string;
+    name?: string;
+    email?: string;
+    image?: string;
+};
+
 export const updateProfileService = async ({
     userId,
     name,
     email,
     image,
-}: {
-    userId: string;
-    name?: string;
-    email?: string;
-    image?: string;
-}) => {
-    if (!name && !email && !image) {
+}: UpdateProfileData) => {
+    if (
+        name === undefined &&
+        email === undefined &&
+        image === undefined
+    ) {
         throw new Error("No changes provided");
     }
 
     return prisma.user.update({
         where: { id: userId },
         data: {
-            ...(name && { name: name.trim() }),
-            ...(email && { email: email.trim().toLowerCase() }),
-            ...(image && { image }),
+            ...(name !== undefined && { name: name.trim() }),
+            ...(email !== undefined && {
+                email: email.trim().toLowerCase(),
+            }),
+            ...(image !== undefined && { image }),
         },
         select: {
             id: true,

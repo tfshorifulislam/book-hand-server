@@ -5,6 +5,7 @@ export const updateProfile = async (req: Request, res: Response) => {
     try {
 
         const userId = req.user?.id;
+        
         if (!userId) {
             return res.status(401).json({
                 success: false,
@@ -13,7 +14,7 @@ export const updateProfile = async (req: Request, res: Response) => {
         }
 
         const { name, email, image } = req.body;
-        
+
         const user = await updateProfileService({ userId, name, email, image, });
 
         return res.status(200).json({
