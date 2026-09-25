@@ -11,7 +11,7 @@ export const deleteSavedBookService = async (userId, listingId) => {
     });
     const keys = await redis.keys(`books:user=${userId}:*`);
     if (keys.length > 0) {
-        await redis.del(keys);
+        await redis.del(...keys);
     }
     return deletedBook;
 };

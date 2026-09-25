@@ -22,8 +22,11 @@ export const sellBookService = async (data) => {
     // Delete all books cache
     const keys = await redis.keys("books:*");
     if (keys.length > 0) {
-        await redis.del(keys);
+        await redis.del(...keys);
         console.log("BOOK CACHE INVALIDATED:", keys);
     }
-    return { book, listing, };
+    return {
+        book,
+        listing,
+    };
 };

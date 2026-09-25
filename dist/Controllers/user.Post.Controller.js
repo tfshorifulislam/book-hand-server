@@ -15,18 +15,15 @@ export const getUserBooks = async (req, res) => {
         const cachedData = await redis.get(cacheKey);
         if (cachedData) {
             console.log("PROFILE BOOKS CACHE HIT:", cacheKey);
-            const result = JSON.parse(cachedData);
             return res.status(200).json({
                 success: true,
-                ...result,
+                ...cachedData,
             });
         }
         console.log("PROFILE BOOKS CACHE MISS:", cacheKey);
         const result = await getUserBooksService(userId, page, limit);
         // Save to Redis for 5 minutes
-        await redis.set(cacheKey, JSON.stringify(result), {
-            EX: 300,
-        });
+        await redis.set(cacheKey, result, { ex: 300, });
         console.log("PROFILE BOOKS CACHE SAVED:", cacheKey);
         return res.status(200).json({
             success: true,
