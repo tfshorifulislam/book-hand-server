@@ -22,6 +22,7 @@ export const updateProfile = async (req: Request, res: Response) => {
             message: "Profile updated successfully",
             data: user,
         });
+        
     } catch (error) {
         console.error("Update profile error:", error);
 

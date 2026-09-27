@@ -7,29 +7,23 @@ type UpdateProfileData = {
     image?: string;
 };
 
+
 export const updateProfileService = async ({
     userId,
     name,
     email,
     image,
 }: UpdateProfileData) => {
-    if (
-        name === undefined &&
-        email === undefined &&
-        image === undefined
-    ) {
-        throw new Error("No changes provided");
-    }
+    
+    const data: any = {};
+
+    if (name) data.name = name;
+    if (email) data.email = email;
+    if (image) data.image = image;
 
     return prisma.user.update({
         where: { id: userId },
-        data: {
-            ...(name !== undefined && { name: name.trim() }),
-            ...(email !== undefined && {
-                email: email.trim().toLowerCase(),
-            }),
-            ...(image !== undefined && { image }),
-        },
+        data,
         select: {
             id: true,
             name: true,

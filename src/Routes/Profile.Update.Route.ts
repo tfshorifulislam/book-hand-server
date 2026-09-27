@@ -5,10 +5,6 @@ import { updateProfile } from "../Controllers/profile.update.controller.js";
 
 const router = Router();
 
-router.patch(
-    "/profile",
-    verifyUser,
-    updateProfile
-);
+router.patch( "/profile", verifyUser, updateProfile );
 
 export default router;
