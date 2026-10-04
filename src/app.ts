@@ -14,6 +14,7 @@ import profileUpdate from './Routes/Profile.Update.Route.js';
 
 
 const app = express();
+
 app.use(cors({
     origin: process.env.NEXT_PUBLIC_FRONTEND_URL,
     credentials: true,
@@ -53,5 +54,10 @@ app.use("/api", wishlistGetPostRoute);
 
 // profile update route
 app.use("/api", profileUpdate);
+
+app.use(message => {
+    console.log(message);
+    return message;
+});
 
 export default app;
