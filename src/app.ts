@@ -55,9 +55,5 @@ app.use("/api", wishlistGetPostRoute);
 // profile update route
 app.use("/api", profileUpdate);
 
-app.use(message => {
-    console.log(message);
-    return message;
-});
 
 export default app;
